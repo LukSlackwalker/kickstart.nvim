@@ -401,6 +401,27 @@ require('lazy').setup({
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
+      -- Debe Keymap
+      vim.keymap.set('n', '<leader>fw', function()
+        local word = vim.fn.expand '<cword>'
+        builtin.grep_string { search = word }
+      end, { desc = 'Find [w]ord under cursor with Grep' })
+
+      -- Debe Keymap
+      vim.keymap.set('n', '<leader>fW', function()
+        local word = vim.fn.expand '<cWORD>'
+        builtin.grep_string { search = word }
+      end, { desc = 'Find [W]ORD under cursor with Grep' })
+
+      -- Debe Keymap
+      vim.keymap.set('v', '<leader>fv', function()
+        local z_orig = vim.fn.getreg 'z'
+        vim.cmd [[execute 'silent! normal! "zy']]
+        local selText = vim.fn.getreg 'z'
+        vim.fn.setreg('z', z_orig)
+        builtin.grep_string { search = selText }
+      end, { desc = 'Find [v]isual selection with Grep' })
+
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
